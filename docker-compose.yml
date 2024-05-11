@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: webapp:v3
+    ports:
+      - "6600:6600"
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/webapp_db" 
+    depends_on:
+      - db
+    entrypoint: 
+      - ./init.sh
+    command: ["python3", "app.py"]
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=webapp_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
