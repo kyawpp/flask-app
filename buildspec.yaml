@@ -35,6 +35,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...          
       - docker build -t $REPOSITORY_URI:latest --build-arg DATABASE_URL=$DATABASE_URL .
+      - export DATABASE_URL=$(aws ssm get-parameter --name /SRE/DATABASE_URL --with-decryption --output text --query Parameter.Value)
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       
 
