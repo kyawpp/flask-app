@@ -1,18 +1,25 @@
 FROM python:3.9-slim
 
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
+# Install PostgreSQL client tools
 RUN apt-get update && apt-get install -y \
-    gcc 
-    
+    gcc \
+    python3-dev \
+    postgresql-client
+
 WORKDIR /app
 
+# Copy the requirements file separately to leverage caching
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# Copy the application files
 COPY . .
 
-RUN chmod +x init.sh && \
-    adduser --disabled-password --gecos '' appuser && \
-    chown -R appuser /app
-USER appuser
+# Ensure executable permissions for the init script
+RUN chmod +x init.sh
 
-CMD ["init.sh", "&&", "python3", "app.py"]
+# Command to run the application
+CMD ["init.sh", "python3", "app.py"]
