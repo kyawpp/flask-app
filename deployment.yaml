@@ -17,9 +17,4 @@ spec:
         image: 951187696305.dkr.ecr.us-east-2.amazonaws.com/sre-repo:latest
         ports:
         - containerPort: 6600
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: myapp-config
-              key: DATABASE_URL
+
