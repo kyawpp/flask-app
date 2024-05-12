@@ -22,4 +22,4 @@ COPY . .
 RUN chmod +x init.sh
 
 # Command to run the application
-CMD ["init.sh", "python3", "app.py"]
+CMD ["python3", "app.py"]
