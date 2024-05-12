@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-v1
+  template:
+    metadata:
+      labels:
+        app: webapp-v1
+    spec:
+      containers:
+      - name: webapp
+        image: 951187696305.dkr.ecr.us-east-2.amazonaws.com/sre-repo:latest
+        ports:
+        - containerPort: 6600
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: myapp-config
+              key: DATABASE_URL

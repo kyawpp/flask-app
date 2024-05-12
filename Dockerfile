@@ -15,4 +15,4 @@ RUN chmod +x init.sh && \
     chown -R appuser /app
 USER appuser
 
-CMD ["python3", "app.py"]
+CMD ["init.sh", "&&", "python3", "app.py"]
